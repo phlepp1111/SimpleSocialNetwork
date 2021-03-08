@@ -1,3 +1,10 @@
 import ReactDOM from "react-dom";
-import Registration from "./registration";
-ReactDOM.render(<Registration />, document.querySelector("main"));
+import Welcome from "./welcome";
+
+let elem;
+if (location.pathname === "/welcome") {
+    elem = <Welcome />;
+} else {
+    elem = <img src="emoji.jpg"></img>;
+}
+ReactDOM.render(elem, document.querySelector("main"));

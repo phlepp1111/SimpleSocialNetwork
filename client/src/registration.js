@@ -1,8 +1,11 @@
 import React from "react";
+import axios from "axios";
 export default class Registration extends React.Component {
     constructor() {
         super();
-        this.state = {};
+        this.state = {
+            error: false,
+        };
     }
     handleChange(e) {
         console.log("handleChange running");
@@ -14,10 +17,31 @@ export default class Registration extends React.Component {
             () => console.log("this.state after setState: ", this.state) //callback fn because setState is async
         );
     }
+    handleClick() {
+        console.log("clicked");
+        axios
+            .post("/registration", this.state)
+            .then(({ data }) => {
+                //IF-ELSE Statement.
+                if (data.success === true) {
+                    location.replace("/");
+                } else {
+                    //render error
+                    this.setState({
+                        error: true,
+                    });
+                }
+            })
+            .catch((error) => {
+                console.log("Axios POST Error on /registration: ", error);
+            });
+    }
     render() {
         return (
             <div>
-                <h1>Registration</h1>
+                <h1>Welcome to foebook</h1>
+                <h1>Register Here</h1>
+                {this.state.error && <p>something went wrong</p>}
                 <input
                     name="first"
                     placeholder="first"
@@ -39,7 +63,17 @@ export default class Registration extends React.Component {
                     type="password"
                     onChange={(e) => this.handleChange(e)}
                 ></input>
-                <button>Submit</button>
+                <input
+                    type="hidden"
+                    name="_csrf"
+                    value="<%= csrfToken %>"
+                ></input>
+                <button onClick={(e) => this.handleClick(e)}>Submit</button>
+                <br></br>
+                <p>
+                    if you already registered, why dont you{" "}
+                    <a href="/"> log in here.</a>
+                </p>
             </div>
         );
     }
