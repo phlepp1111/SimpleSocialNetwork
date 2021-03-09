@@ -1,5 +1,7 @@
 import React from "react";
-import axios from "axios";
+import axios from "./axios";
+import { Link } from "react-router-dom";
+
 export default class Registration extends React.Component {
     constructor() {
         super();
@@ -23,7 +25,7 @@ export default class Registration extends React.Component {
             .post("/registration", this.state)
             .then(({ data }) => {
                 //IF-ELSE Statement.
-                if (data.success === true) {
+                if (data.success) {
                     location.replace("/");
                 } else {
                     //render error
@@ -39,7 +41,6 @@ export default class Registration extends React.Component {
     render() {
         return (
             <div>
-                <h1>Welcome to foebook</h1>
                 <h1>Register Here</h1>
                 {this.state.error && <p>something went wrong</p>}
                 <input
@@ -72,7 +73,7 @@ export default class Registration extends React.Component {
                 <br></br>
                 <p>
                     if you already registered, why dont you{" "}
-                    <a href="/"> log in here.</a>
+                    <Link to="/login"> log in here.</Link>
                 </p>
             </div>
         );

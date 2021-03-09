@@ -13,3 +13,9 @@ module.exports.registerUser = (first, last, email, password_hash) => {
     const params = [first, last, email, password_hash];
     return db.query(q, params);
 };
+
+module.exports.getPassword = (email) => {
+    const q = "SELECT password_hash, id FROM users WHERE email = $1";
+    const params = [email];
+    return db.query(q, params);
+};

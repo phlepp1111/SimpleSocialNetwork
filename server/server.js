@@ -22,10 +22,10 @@ app.use(express.urlencoded({ extended: false }));
 app.use(csrf());
 
 app.use(function (req, res, next) {
-    res.cookie("XSRF-TOKEN", req.csrfToken());
-    res.locals.csrfToken = req.csrfToken();
+    res.cookie("mytoken", req.csrfToken());
     next();
 });
+
 app.use(express.json());
 
 app.get("/welcome", (req, res) => {
@@ -39,27 +39,55 @@ app.get("/welcome", (req, res) => {
 app.post("/registration", (req, res) => {
     console.log("POST REGISTRATION");
     let { first, last, email, password } = req.body;
-    hash(password)
-        .then((password_hash) => {
-            console.log("PW HASH:", password_hash);
-            db.registerUser(first, last, email, password_hash)
-                .then(({ rows }) => {
-                    console.log("db.registerUser: ", rows[0]);
-                    req.session.userId = rows[0].id;
-                    res.json({
-                        success: true,
-                    });
-                    res.redirect("/");
-                })
-                .catch((error) => {
-                    console.log("RegisterError: ", error);
-                    res.json({
-                        success: false,
-                    });
+    if (!first || !last || !password) {
+        res.json({ success: false });
+    } else {
+        hash(password)
+            .then((password_hash) => {
+                console.log("PW HASH:", password_hash);
+                db.registerUser(first, last, email, password_hash).then(
+                    ({ rows }) => {
+                        console.log("db.registerUser: ", rows[0]);
+                        req.session.userId = rows[0].id;
+                        res.json({
+                            success: true,
+                        });
+                    }
+                );
+            })
+            .catch((error) => {
+                console.log("HASH Error: ", error);
+                res.json({
+                    success: false,
                 });
+            });
+    }
+});
+
+app.post("/login", (req, res) => {
+    console.log("login POST route");
+    const { email, password } = req.body;
+    let userId;
+    let password_hash;
+    db.getPassword(email)
+        .then(({ rows }) => {
+            password_hash = rows[0].password_hash;
+            userId = rows[0].id;
+            console.log("in the retrive pw block");
+            return compare(password, password_hash);
+        })
+        .then((match) => {
+            if (match) {
+                console.log("MATCH: user id is: ", userId);
+                req.session.userId = userId;
+                res.json({ success: true });
+            } else {
+                res.json({ success: false });
+            }
         })
         .catch((error) => {
-            console.log("HASH Error: ", error);
+            console.log("Password Server Error: ", error);
+            res.json({ success: false });
         });
 });
 
