@@ -73,12 +73,11 @@ app.post("/login", (req, res) => {
         .then(({ rows }) => {
             password_hash = rows[0].password_hash;
             userId = rows[0].id;
-            console.log("in the retrive pw block");
             return compare(password, password_hash);
         })
         .then((match) => {
             if (match) {
-                console.log("MATCH: user id is: ", userId);
+                console.log("MATCH! user id is: ", userId);
                 req.session.userId = userId;
                 res.json({ success: true });
             } else {

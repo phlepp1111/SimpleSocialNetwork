@@ -42,7 +42,9 @@ export default class Registration extends React.Component {
         return (
             <div>
                 <h1>Register Here</h1>
-                {this.state.error && <p>something went wrong</p>}
+                {this.state.error && (
+                    <p className="errorMessage">something went wrong</p>
+                )}
                 <input
                     name="first"
                     placeholder="first"
@@ -63,11 +65,6 @@ export default class Registration extends React.Component {
                     placeholder="password"
                     type="password"
                     onChange={(e) => this.handleChange(e)}
-                ></input>
-                <input
-                    type="hidden"
-                    name="_csrf"
-                    value="<%= csrfToken %>"
                 ></input>
                 <button onClick={(e) => this.handleClick(e)}>Submit</button>
                 <br></br>

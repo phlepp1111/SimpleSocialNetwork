@@ -37,12 +37,12 @@ export default class Login extends Component {
             <div>
                 <h1>Login Here:</h1>
                 <h3>
-                    Or <Link to="/register">Register Here</Link>
+                    Or <Link to="/registration">Register Here</Link>
                 </h3>
                 {this.state.error && (
-                    <span className="errorMessage">
+                    <p className="errorMessage">
                         `Are you sure you already registered?`
-                    </span>
+                    </p>
                 )}
                 <input
                     name="email"
