@@ -83,17 +83,20 @@ export default class Reset extends React.Component {
                 <div>
                     <h1>Ok! We have sent a Reset Code to your email address</h1>
                     {this.state.error && (
-                        <span className="errorMessage">
+                        <p className="errorMessage">
                             Please check the Reset Code again
-                        </span>
+                        </p>
                     )}
                     <input
-                        name="code"
+                        name="resetCode"
+                        key="resetCode"
                         placeholder="Reset Code"
                         onChange={(e) => this.handleChange(e)}
                     />
 
                     <input
+                        name="newPassword"
+                        key="newPassword"
                         placeholder="New Password"
                         type="password"
                         onChange={(e) => this.handleChange(e)}
@@ -107,13 +110,13 @@ export default class Reset extends React.Component {
             return (
                 <div>
                     <h1>Looks like everything worked out!</h1>
-                    <span className="submitButton">
+                    <button className="submitButton">
                         <Link to="/login">Continue to login</Link>
-                    </span>
+                    </button>
                     {this.state.error && (
-                        <span className="errorMessage">
+                        <p className="errorMessage">
                             Something went wrong, please try again
-                        </span>
+                        </p>
                     )}
                 </div>
             );

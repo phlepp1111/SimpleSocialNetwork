@@ -97,7 +97,7 @@ app.post("/reset1", (req, res) => {
     db.getPassword(email)
         .then(({ rows }) => {
             if (rows[0]) {
-                let resetCode = cryptoRandomString({ length: 6 });
+                const resetCode = cryptoRandomString({ length: 6 });
                 db.addResetCode(email, resetCode).then(() => {
                     ses.sendResetEmail(email, resetCode);
                     res.json({ success: true });
@@ -112,9 +112,12 @@ app.post("/reset1", (req, res) => {
 });
 
 app.post("/reset2", (req, res) => {
-    const { code, newPassword, email } = req.body;
+    const { resetCode, newPassword, email } = req.body;
+    console.log("reset req.body:", req.body);
     db.getResetCode(email).then(({ rows }) => {
-        if (rows[0].code === code) {
+        console.log("rows from db: ", rows);
+        console.log("resetCode from db: ", rows[0].resetcode);
+        if (rows[0].resetcode === resetCode) {
             hash(newPassword).then((password_hash) => {
                 db.updatePassword(password_hash, email).then(() => {
                     res.json({ success: true });
