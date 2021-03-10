@@ -6,6 +6,8 @@ const db = require("./db");
 const cookieSession = require("cookie-session");
 const csrf = require("csurf");
 const { hash, compare } = require("./bcrypt.js");
+const cryptoRandomString = require("crypto-random-string");
+const ses = require("./SES");
 
 app.use(compression());
 
@@ -39,7 +41,7 @@ app.get("/welcome", (req, res) => {
 app.post("/registration", (req, res) => {
     console.log("POST REGISTRATION");
     let { first, last, email, password } = req.body;
-    if (!first || !last || !password) {
+    if (!first || !last || !email || !password) {
         res.json({ success: false });
     } else {
         hash(password)
@@ -88,6 +90,40 @@ app.post("/login", (req, res) => {
             console.log("Password Server Error: ", error);
             res.json({ success: false });
         });
+});
+
+app.post("/reset1", (req, res) => {
+    const { email } = req.body;
+    db.getPassword(email)
+        .then(({ rows }) => {
+            if (rows[0]) {
+                let resetCode = cryptoRandomString({ length: 6 });
+                db.addResetCode(email, resetCode).then(() => {
+                    ses.sendResetEmail(email, resetCode);
+                    res.json({ success: true });
+                });
+            } else {
+                res.json({ success: false });
+            }
+        })
+        .catch((err) => {
+            console.log("Error in reset stage one", err);
+        });
+});
+
+app.post("/reset2", (req, res) => {
+    const { code, newPassword, email } = req.body;
+    db.getResetCode(email).then(({ rows }) => {
+        if (rows[0].code === code) {
+            hash(newPassword).then((password_hash) => {
+                db.updatePassword(password_hash, email).then(() => {
+                    res.json({ success: true });
+                });
+            });
+        } else {
+            res.json({ error: true });
+        }
+    });
 });
 
 app.get("*", function (req, res) {

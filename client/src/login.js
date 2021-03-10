@@ -37,7 +37,7 @@ export default class Login extends Component {
             <div>
                 <h1>Login Here:</h1>
                 <h3>
-                    Or <Link to="/registration">Register Here</Link>
+                    Or <Link to="/">Register Here</Link>
                 </h3>
                 {this.state.error && (
                     <p className="errorMessage">
@@ -57,6 +57,10 @@ export default class Login extends Component {
                 />
                 <br />
                 <button onClick={() => this.handleClick()}>Login</button>
+                <br />
+                <p>
+                    Forgot your password? <Link to="/reset">Reset it here</Link>
+                </p>
             </div>
         );
     }

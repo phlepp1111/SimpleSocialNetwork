@@ -1,6 +1,7 @@
 import Registration from "./registration";
 import { HashRouter, Route } from "react-router-dom";
 import Login from "./login";
+import Reset from "./reset";
 
 export default function Welcome() {
     return (
@@ -9,8 +10,9 @@ export default function Welcome() {
             <img src="emoji.jpg"></img>
             <HashRouter>
                 <div>
-                    <Route exact path="/register" component={Registration} />
+                    <Route exact path="/" component={Registration} />
                     <Route path="/login" component={Login} />
+                    <Route path="/reset" component={Reset} />
                 </div>
             </HashRouter>
         </div>

@@ -66,7 +66,7 @@ export default class Registration extends React.Component {
                     type="password"
                     onChange={(e) => this.handleChange(e)}
                 ></input>
-                <button onClick={(e) => this.handleClick(e)}>Submit</button>
+                <button onClick={() => this.handleClick()}>Submit</button>
                 <br></br>
                 <p>
                     if you already registered, why dont you{" "}

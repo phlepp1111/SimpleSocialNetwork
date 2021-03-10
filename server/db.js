@@ -6,16 +6,44 @@ const db = spicedPg(
 
 module.exports.registerUser = (first, last, email, password_hash) => {
     const q = `
-                    INSERT INTO users (first, last, email, password_hash)
-                    VALUES ($1, $2, $3, $4)
-                    RETURNING id;
-                    `;
+    INSERT INTO users (first, last, email, password_hash)
+    VALUES ($1, $2, $3, $4)
+    RETURNING id;
+    `;
     const params = [first, last, email, password_hash];
     return db.query(q, params);
 };
 
 module.exports.getPassword = (email) => {
     const q = "SELECT password_hash, id FROM users WHERE email = $1";
+    const params = [email];
+    return db.query(q, params);
+};
+
+module.exports.updatePassword = (password_hash, email) => {
+    const q = "UPDATE users SET password_hash = $1 WHERE email = $2";
+    const params = [password_hash, email];
+    return db.query(q, params);
+};
+
+module.exports.addResetCode = (email, resetCode) => {
+    const q = `
+    INSERT INTO reset (email, resetCode)
+    VALUES ($1, $2)
+    ON CONFLICT (email)
+    DO
+    UPDATE SET resetCode = $2, created_at = CURRENT_TIMESTAMP
+    RETURNING *
+    `;
+    const params = [email, resetCode];
+    return db.query(q, params);
+};
+
+module.exports.getResetCode = (email) => {
+    const q = `SELECT resetCode FROM reset 
+    WHERE email = $1
+    AND CURRENT_TIMESTAMP - created_at < INTERVAL '10 minutes';
+    `;
     const params = [email];
     return db.query(q, params);
 };
