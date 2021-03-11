@@ -152,7 +152,13 @@ app.get("/profile-info", (req, res) => {
     console.log("userId: ", req.session.userId);
     db.getUser(req.session.userId).then(({ rows }) => {
         console.log("rows in get user:", rows);
-        res.json({ success: true, first: rows[0].first, last: rows[0].last });
+        res.json({
+            success: true,
+            first: rows[0].first,
+            last: rows[0].last,
+            bio: rows[0].bio,
+            imageUrl: rows[0].imageurl,
+        });
     });
 });
 
