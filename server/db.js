@@ -47,3 +47,23 @@ module.exports.getResetCode = (email) => {
     const params = [email];
     return db.query(q, params);
 };
+
+module.exports.getUser = (id) => {
+    const q = `
+        SELECT * FROM users
+        WHERE id = $1
+    `;
+    const params = [id];
+    return db.query(q, params);
+};
+
+module.exports.updateImage = (id, imageUrl) => {
+    const q = `
+    UPDATE users
+    SET imageUrl = $2
+    WHERE id = $1
+    RETURNING *
+    `;
+    const params = [id, imageUrl];
+    return db.query(q, params);
+};

@@ -8,6 +8,25 @@ const csrf = require("csurf");
 const { hash, compare } = require("./bcrypt.js");
 const cryptoRandomString = require("crypto-random-string");
 const ses = require("./SES");
+const s3 = require("./S3");
+const uidSafe = require("uid-safe");
+const multer = require("multer");
+const diskStorage = multer.diskStorage({
+    destination: function (req, file, callback) {
+        callback(null, __dirname + "/uploads");
+    },
+    filename: function (req, file, callback) {
+        uidSafe(24).then(function (uid) {
+            callback(null, uid + path.extname(file.originalname));
+        });
+    },
+});
+const uploader = multer({
+    storage: diskStorage,
+    limits: {
+        fileSize: 2097152,
+    },
+});
 
 app.use(compression());
 
@@ -127,6 +146,37 @@ app.post("/reset2", (req, res) => {
             res.json({ error: true });
         }
     });
+});
+
+app.get("/profile-info", (req, res) => {
+    console.log("userId: ", req.session.userId);
+    db.getUser(req.session.userId).then(({ rows }) => {
+        console.log("rows in get user:", rows);
+        res.json({ success: true, first: rows[0].first, last: rows[0].last });
+    });
+});
+
+app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
+    // console.log("image uploaded: ", req.file);
+    const { filename } = req.file;
+    if (req.file) {
+        db.updateImage(
+            req.session.userId,
+            "https://s3.amazonaws.com/image-board-bucket/" + filename
+        )
+            .then(({ rows }) => {
+                console.log("New profile img added - details:", rows);
+                res.json({
+                    imageUrl: rows[0].imageurl,
+                    success: true,
+                });
+            })
+            .catch((err) => {
+                console.log("err in addImages", err);
+                res.json({ success: false });
+            });
+    }
+    // res.json({ success: false });
 });
 
 app.get("*", function (req, res) {
