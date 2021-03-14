@@ -1,16 +1,19 @@
-export default function ProfilePic({ first, last, imageUrl }) {
+export default function ProfilePic({
+    first,
+    last,
+    imageUrl,
+    toggleUploaderApp,
+    className,
+}) {
     // console.log("props being passed from App: ", props);
-    imageUrl = imageUrl || "default.png";
+    imageUrl = imageUrl || "https://picsum.photos/200/200?grayscale&blur";
     return (
         <div>
-            <h2>
-                Pic of {first} {last} here
-            </h2>
             <img
-                width="200px"
-                heigt="200px"
+                className={className}
+                onDoubleClick={toggleUploaderApp}
                 src={imageUrl}
-                alt={first + last}
+                alt={first + " " + last}
             />
         </div>
     );

@@ -50,7 +50,7 @@ module.exports.getResetCode = (email) => {
 
 module.exports.getUser = (id) => {
     const q = `
-        SELECT * FROM users
+        SELECT first, last, bio, imageurl FROM users
         WHERE id = $1
     `;
     const params = [id];
@@ -65,5 +65,14 @@ module.exports.updateImage = (id, imageUrl) => {
     RETURNING *
     `;
     const params = [id, imageUrl];
+    return db.query(q, params);
+};
+
+module.exports.saveBio = (bio, id) => {
+    const q = `
+    UPDATE users SET bio = ($1)
+    WHERE id = ($2)   
+    `;
+    const params = [bio, id];
     return db.query(q, params);
 };

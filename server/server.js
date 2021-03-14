@@ -11,6 +11,7 @@ const ses = require("./SES");
 const s3 = require("./S3");
 const uidSafe = require("uid-safe");
 const multer = require("multer");
+
 const diskStorage = multer.diskStorage({
     destination: function (req, file, callback) {
         callback(null, __dirname + "/uploads");
@@ -125,8 +126,8 @@ app.post("/reset1", (req, res) => {
                 res.json({ success: false });
             }
         })
-        .catch((err) => {
-            console.log("Error in reset stage one", err);
+        .catch((error) => {
+            console.log("Error in reset stage one", error);
         });
 });
 
@@ -183,6 +184,18 @@ app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
             });
     }
     // res.json({ success: false });
+});
+
+app.post("/bioSAVE", (req, res) => {
+    const { bioDraft } = req.body;
+    db.saveBio(bioDraft, req.session.userId)
+        .then(() => {
+            res.json({ success: true });
+        })
+        .catch((error) => {
+            console.log("error saving bio: ", error);
+            res.json({ success: false });
+        });
 });
 
 app.get("*", function (req, res) {

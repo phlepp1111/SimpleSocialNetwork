@@ -1,6 +1,29 @@
 body {
     background-color: white;
 }
+textarea {
+    width: 300px;
+    height: 70px;
+}
 .spiced {
     color: blueviolet;
+}
+.smallprofile {
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    width: 100px;
+    height: 100px;
+    border: 2px solid black;
+    border-radius: 50%;
+}
+.fullprofile {
+    border: 2px solid black;
+    display: block;
+    margin: auto;
+    max-width: 720px;
+    max-height: 480px;
+}
+.Profile {
+    text-align: center;
 }

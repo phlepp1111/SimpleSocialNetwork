@@ -11,7 +11,7 @@ export default class Registration extends React.Component {
     }
     handleChange(e) {
         console.log("handleChange running");
-        console.log(e.target.name);
+        // console.log(e.target.name);
         this.setState(
             {
                 [e.target.name]: e.target.value,

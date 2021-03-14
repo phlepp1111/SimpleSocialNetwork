@@ -110,7 +110,7 @@ export default class Reset extends React.Component {
             return (
                 <div>
                     <h1>Looks like everything worked out!</h1>
-                    <button className="submitButton">
+                    <button>
                         <Link to="/login">Continue to login</Link>
                     </button>
                     {this.state.error && (
