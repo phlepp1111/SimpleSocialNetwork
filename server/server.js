@@ -11,6 +11,7 @@ const ses = require("./SES");
 const s3 = require("./S3");
 const uidSafe = require("uid-safe");
 const multer = require("multer");
+const secrets = require("../secrets");
 
 const diskStorage = multer.diskStorage({
     destination: function (req, file, callback) {
@@ -35,7 +36,7 @@ app.use(express.static(path.join(__dirname, "..", "client", "public")));
 
 app.use(
     cookieSession({
-        secret: `Cookiemonster on the Hunt`,
+        secret: secrets.COOKIE,
         maxAge: 1000 * 60 * 60 * 24 * 14,
     })
 );
@@ -164,7 +165,6 @@ app.get("/profile-info", (req, res) => {
 });
 
 app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
-    // console.log("image uploaded: ", req.file);
     const { filename } = req.file;
     if (req.file) {
         db.updateImage(
@@ -178,12 +178,11 @@ app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
                     success: true,
                 });
             })
-            .catch((err) => {
-                console.log("err in addImages", err);
+            .catch((error) => {
+                console.log("err in addImages", error);
                 res.json({ success: false });
             });
     }
-    // res.json({ success: false });
 });
 
 app.post("/bioSAVE", (req, res) => {
@@ -196,6 +195,23 @@ app.post("/bioSAVE", (req, res) => {
             console.log("error saving bio: ", error);
             res.json({ success: false });
         });
+});
+
+app.post("/getOtherProfile", (req, res) => {
+    if (req.body.id == req.session.userId) {
+        res.json({ success: false });
+    } else {
+        db.getUser(req.body.id)
+            .then(({ rows }) => {
+                if (rows[0]) {
+                    console.log("rows getOtherUsers", rows);
+                    res.json(rows[0]);
+                } else {
+                    res.json({ success: false });
+                }
+            })
+            .catch((error) => console.log("error in getOtherUser", error));
+    }
 });
 
 app.get("*", function (req, res) {

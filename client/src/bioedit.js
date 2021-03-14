@@ -12,7 +12,7 @@ export default class BioEdit extends React.Component {
     }
     componentDidMount() {
         console.log("Bioedit mounted");
-        console.log("this.props.bio:", this.props.bio);
+        // console.log("this.props.bio:", this.props.bio);
         if (this.props.bio) {
             this.setState({
                 buttonText: "EDIT",

@@ -23,7 +23,6 @@ export default class App extends Component {
             .get("/profile-info")
             .then(({ data }) => {
                 if (data.success) {
-                    console.log("get profile info data", data);
                     this.setState({
                         first: data.first,
                         last: data.last,
@@ -44,9 +43,9 @@ export default class App extends Component {
             uploaderIsVisible: !this.state.uploaderIsVisible,
         });
     }
+    homeProfile() {}
     uploadModule(imageUrl) {
         console.log("uploadModule is running. argument passed:", imageUrl);
-        // console.log("??", this.state.imageUrl);
         this.setState({
             imageUrl: imageUrl,
         });
@@ -55,7 +54,8 @@ export default class App extends Component {
         return (
             <BrowserRouter>
                 <div>
-                    <h1>Social Networking at its best</h1>
+                    <img className="Logo" src="../geometric dots.gif"></img>
+                    <h1 className="title">Semi-social network</h1>
                     <ProfilePic
                         className="smallprofile"
                         first={this.state.first}

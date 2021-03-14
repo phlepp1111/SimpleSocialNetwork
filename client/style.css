@@ -1,21 +1,25 @@
 body {
-    background-color: white;
+    background-color: lightgrey;
 }
 textarea {
     width: 300px;
     height: 70px;
 }
-.spiced {
-    color: blueviolet;
-}
+
 .smallprofile {
     position: fixed;
     top: 15px;
     right: 15px;
-    width: 100px;
-    height: 100px;
+    width: 150px;
+    height: 150px;
     border: 2px solid black;
     border-radius: 50%;
+    box-shadow: 0 0 50px;
+    transition: 0.3s color;
+    color: dimgray;
+}
+.smallprofile:hover {
+    color: black;
 }
 .fullprofile {
     border: 2px solid black;
@@ -26,4 +30,29 @@ textarea {
 }
 .Profile {
     text-align: center;
+}
+.title {
+    text-align: center;
+}
+.LinkHome {
+    display: block;
+    max-width: 720px;
+    max-height: 480px;
+    padding: 0;
+    margin: auto;
+}
+.Logo {
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    width: 150px;
+    height: 150px;
+    border: 2px solid black;
+    border-radius: 50%;
+    box-shadow: 0 0 50px;
+    transition: 0.3s color;
+    color: dimgray;
+}
+.Logo:hover {
+    color: black;
 }

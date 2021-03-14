@@ -13,7 +13,7 @@ export default class Uploader extends Component {
         this.props.methodInApp("cool stuff!");
     }
     handleChange(e) {
-        console.log(e.target.files[0]);
+        // console.log(e.target.files[0]);
         this.setState({
             [e.target.name]: e.target.files[0],
         });
@@ -21,7 +21,7 @@ export default class Uploader extends Component {
     uploadImage(e) {
         e.preventDefault();
         var formData = new FormData();
-        console.log("FormData when uploading img: ", formData);
+        // console.log("FormData when uploading img: ", formData);
         formData.append("file", this.state.file);
         axios
             .post("/upload", formData)
@@ -41,14 +41,13 @@ export default class Uploader extends Component {
     }
 
     toggleUploader() {
-        console.log("this.props: ", this.props);
+        // console.log("this.props: ", this.props);
         this.props.toggleUploaderApp();
     }
     render() {
         return (
             <div>
                 <h2>Upload a new profile image here</h2>
-                <h2 onClick={(e) => this.toggleUploader(e)}>X</h2>
                 <form>
                     <input
                         onChange={(e) => this.handleChange(e)}
