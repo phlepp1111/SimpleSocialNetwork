@@ -226,7 +226,7 @@ app.post("/users/most-recent", (req, res) => {
         });
 });
 
-app.get("/users/:input", (req, res) => {
+app.post("/users/:input", (req, res) => {
     const input = req.params.input;
     db.searchPeople(input)
         .then((result) => res.json(result.rows))

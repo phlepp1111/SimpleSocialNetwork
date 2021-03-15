@@ -17,7 +17,7 @@ export default function FindPeople() {
     useEffect(
         function () {
             axios
-                .get(`/users/${searchTerm}`)
+                .post(`/users/${searchTerm}`)
                 .then(({ data }) => {
                     console.log("search result: ", data);
                     setResultUsersSearch(data);
@@ -67,7 +67,7 @@ export default function FindPeople() {
                                 to={`/users/${user.id}`}
                             >
                                 <p>
-                                    {user.last} {user.first}
+                                    {user.first} {user.last}
                                 </p>
                             </Link>
                         </div>
