@@ -76,3 +76,12 @@ module.exports.saveBio = (bio, id) => {
     const params = [bio, id];
     return db.query(q, params);
 };
+
+module.exports.getMostRecent = () => {
+    const q = `
+    SELECT id, first, last, imageurl, created_at FROM users
+    ORDER BY created_at ASC
+    LIMIT 3
+    `;
+    return db.query(q);
+};

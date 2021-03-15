@@ -214,6 +214,18 @@ app.post("/getOtherProfile", (req, res) => {
     }
 });
 
+app.post("/users/most-recent", (req, res) => {
+    db.getMostRecent()
+        .then(({ rows }) => {
+            console.log("Most recent ROWS:", rows);
+            res.json({ success: true, users: rows });
+        })
+        .catch((error) => {
+            console.log("error grabbing recent people", error);
+            res.json({ success: false });
+        });
+});
+
 app.get("*", function (req, res) {
     if (!req.session.userId) {
         res.redirect("/welcome");

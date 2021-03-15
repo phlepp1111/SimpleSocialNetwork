@@ -2,9 +2,10 @@ import { Component } from "react";
 import ProfilePic from "./profilepic";
 import Uploader from "./uploader";
 import axios from "./axios";
-import { BrowserRouter, Route } from "react-router-dom";
+import { BrowserRouter, Route, Link } from "react-router-dom";
 import Profile from "./profile";
 import OtherProfile from "./otherprofile";
+import FindPeople from "./findpeople";
 
 export default class App extends Component {
     constructor() {
@@ -54,7 +55,9 @@ export default class App extends Component {
         return (
             <BrowserRouter>
                 <div>
-                    <img className="Logo" src="../geometric dots.gif"></img>
+                    <Link to="/users">
+                        <img className="Logo" src="../geometric dots.gif"></img>
+                    </Link>
                     <h1 className="title">Semi-social network</h1>
                     <ProfilePic
                         className="smallprofile"
@@ -81,7 +84,7 @@ export default class App extends Component {
                     />
 
                     <Route
-                        path="/user/:id"
+                        path="/users/:id"
                         render={(props) => (
                             <OtherProfile
                                 key={props.match.url}
@@ -90,6 +93,8 @@ export default class App extends Component {
                             />
                         )}
                     />
+                    <Route path="/users" render={() => <FindPeople />} />
+
                     {this.state.uploaderIsVisible && (
                         <Uploader
                             toggleUploaderApp={() => this.toggleUploaderApp()}

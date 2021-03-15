@@ -56,3 +56,14 @@ textarea {
 .Logo:hover {
     color: black;
 }
+.findpeople {
+    margin: auto;
+    text-align: center;
+}
+input {
+    text-align: center;
+}
+.mostRecent {
+    max-width: 100px;
+    max-height: 100px;
+}
