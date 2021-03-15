@@ -85,3 +85,11 @@ module.exports.getMostRecent = () => {
     `;
     return db.query(q);
 };
+
+module.exports.searchPeople = (input) => {
+    return db.query(
+        `
+    SELECT * FROM users WHERE first ILIKE $1 OR last ILIKE $1;`,
+        [input + "%"]
+    );
+};

@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import axios from "./axios";
 
 export default function FindPeople() {
     const [searchTerm, setSearchTerm] = useState();
     const [resultUsers, setResultUsers] = useState();
+    const [resultUsersSearch, setResultUsersSearch] = useState();
 
     useEffect(function () {
         axios.post("/users/most-recent").then(({ data }) => {
@@ -14,7 +16,15 @@ export default function FindPeople() {
 
     useEffect(
         function () {
-            axios.get("/user/" + searchTerm);
+            axios
+                .get(`/users/${searchTerm}`)
+                .then(({ data }) => {
+                    console.log("search result: ", data);
+                    setResultUsersSearch(data);
+                })
+                .catch((error) => {
+                    console.log("something went wrong with the search", error);
+                });
         },
         [searchTerm]
     );
@@ -25,8 +35,18 @@ export default function FindPeople() {
                 resultUsers.map(function (user) {
                     return (
                         <div key={user.id}>
-                            <img className="mostRecent" src={user.imageurl} />
-                            <p>{user.first}</p>
+                            <Link
+                                className="mostRecentLink"
+                                to={`/users/${user.id}`}
+                            >
+                                <div className="mostRecentContainer">
+                                    <img
+                                        className="mostRecentImage"
+                                        src={user.imageurl}
+                                    />
+                                    <p>{user.first}</p>
+                                </div>
+                            </Link>
                         </div>
                     );
                 })}
@@ -37,6 +57,22 @@ export default function FindPeople() {
                     setSearchTerm(target.value);
                 }}
             />
+            <br />
+            {resultUsersSearch &&
+                resultUsersSearch.map(function (user) {
+                    return (
+                        <div key={user.id}>
+                            <Link
+                                className="mostRecentLink"
+                                to={`/users/${user.id}`}
+                            >
+                                <p>
+                                    {user.last} {user.first}
+                                </p>
+                            </Link>
+                        </div>
+                    );
+                })}
         </div>
     );
 }

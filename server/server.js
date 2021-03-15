@@ -226,6 +226,14 @@ app.post("/users/most-recent", (req, res) => {
         });
 });
 
+app.get("/users/:input", (req, res) => {
+    const input = req.params.input;
+    db.searchPeople(input)
+        .then((result) => res.json(result.rows))
+        .catch((error) => console.log("search error", error));
+    console.log(req.params);
+});
+
 app.get("*", function (req, res) {
     if (!req.session.userId) {
         res.redirect("/welcome");
