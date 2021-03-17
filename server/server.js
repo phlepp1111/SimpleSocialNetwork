@@ -113,6 +113,11 @@ app.post("/login", (req, res) => {
         });
 });
 
+app.get("/logout", (req, res) => {
+    req.session.userId = null;
+    res.sendStatus(200);
+});
+
 app.post("/reset1", (req, res) => {
     const { email } = req.body;
     db.getPassword(email)
@@ -231,7 +236,18 @@ app.post("/users/:input", (req, res) => {
     db.searchPeople(input)
         .then((result) => res.json(result.rows))
         .catch((error) => console.log("search error", error));
-    console.log(req.params);
+    // console.log(req.params);
+});
+
+app.get("/users/getFriendshipStatus", (req, res) => {
+    console.log("req.params FriendshipStatus: ", req.params);
+    db.getFriendshipStatus(req.session.userId, req.params.id)
+        .then((result) => {
+            console.log("Result Friendshipstatus: ", result);
+        })
+        .catch((error) =>
+            console.log("Error getting friendship status: ", error)
+        );
 });
 
 app.get("*", function (req, res) {
