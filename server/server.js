@@ -247,7 +247,7 @@ app.post("/friends/:id", (req, res) => {
         .then(({ rows }) => {
             console.log("Result ROWS Friendshipstatus: ", rows);
             res.json({
-                rows: rows,
+                rows: rows[0],
                 loggedInUser: req.session.userId,
             });
         })
@@ -285,7 +285,7 @@ app.post("/addFriend", (req, res) => {
         db.acceptRequest(sender_id, recipient_id)
             .then(({ rows }) => {
                 console.log("rows after accepting friend request", rows);
-                res.json({ rows: rows, loggedInUser: req.session.userId });
+                res.json({ rows: rows[0], loggedInUser: req.session.userId });
             })
             .catch((error) =>
                 console.log("error in acceptFriend-db-req", error)

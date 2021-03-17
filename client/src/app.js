@@ -84,6 +84,7 @@ export default class App extends Component {
                     />
 
                     <Route
+                        exact
                         path="/users/:id"
                         render={(props) => (
                             <OtherProfile

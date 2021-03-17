@@ -119,6 +119,7 @@ module.exports.deleteFriend = (sender_id, recipient_id) => {
     DELETE FROM friendships 
     WHERE (recipient_id = $1 AND sender_id = $2) 
     OR (recipient_id = $2 AND sender_id = $1)
+    RETURNING *
     `;
     const params = [sender_id, recipient_id];
     return db.query(q, params);
@@ -129,6 +130,7 @@ module.exports.acceptRequest = (sender_id, recipient_id) => {
     UPDATE friendships SET accepted = TRUE
     WHERE (recipient_id = $1 AND sender_id = $2) 
     OR (recipient_id = $2 AND sender_id = $1)
+    RETURNING *
     `;
     const params = [sender_id, recipient_id];
     return db.query(q, params);
