@@ -156,9 +156,9 @@ app.post("/reset2", (req, res) => {
 });
 
 app.get("/profile-info", (req, res) => {
-    console.log("userId: ", req.session.userId);
+    // console.log("userId: ", req.session.userId);
     db.getUser(req.session.userId).then(({ rows }) => {
-        console.log("rows in get user:", rows);
+        // console.log("rows in get user:", rows);
         res.json({
             success: true,
             first: rows[0].first,
@@ -209,7 +209,7 @@ app.post("/getOtherProfile", (req, res) => {
         db.getUser(req.body.id)
             .then(({ rows }) => {
                 if (rows[0]) {
-                    console.log("rows getOtherUsers", rows);
+                    //console.log("rows getOtherUsers", rows);
                     res.json(rows[0]);
                 } else {
                     res.json({ success: false });
@@ -222,7 +222,7 @@ app.post("/getOtherProfile", (req, res) => {
 app.post("/users/most-recent", (req, res) => {
     db.getMostRecent()
         .then(({ rows }) => {
-            console.log("Most recent ROWS:", rows);
+            // console.log("Most recent ROWS:", rows);
             res.json({ success: true, users: rows });
         })
         .catch((error) => {
@@ -239,15 +239,58 @@ app.post("/users/:input", (req, res) => {
     // console.log(req.params);
 });
 
-app.get("/users/getFriendshipStatus", (req, res) => {
+app.post("/friends/:id", (req, res) => {
     console.log("req.params FriendshipStatus: ", req.params);
-    db.getFriendshipStatus(req.session.userId, req.params.id)
-        .then((result) => {
-            console.log("Result Friendshipstatus: ", result);
+    const sender_id = req.session.userId;
+    const recipient_id = req.params.id;
+    db.getFriendshipStatus(sender_id, recipient_id)
+        .then(({ rows }) => {
+            console.log("Result ROWS Friendshipstatus: ", rows);
+            res.json({
+                rows: rows,
+                loggedInUser: req.session.userId,
+            });
         })
         .catch((error) =>
             console.log("Error getting friendship status: ", error)
         );
+});
+
+app.post("/addFriend", (req, res) => {
+    console.log("adding a friend");
+    console.log(req.body);
+    const { friendlyAction, otherUser } = req.body;
+    const sender_id = req.session.userId;
+    const recipient_id = otherUser;
+    if (friendlyAction === "ADD FRIEND") {
+        db.addFriend(sender_id, recipient_id)
+            .then(({ rows }) => {
+                console.log("Result friend request", rows);
+                res.json({ rows: rows[0], loggedInUser: req.session.userId });
+            })
+            .catch((error) =>
+                console.log("error adding friend to db, ", error)
+            );
+    } else if (
+        friendlyAction === "UNFRIEND" ||
+        friendlyAction === "CANCEL REQUEST"
+    ) {
+        db.deleteFriend(sender_id, recipient_id)
+            .then(({ rows }) => {
+                console.log("rows from deleteFriend", rows);
+                res.json({ rows: rows[0], loggedInUser: req.session.userId });
+            })
+            .catch((error) => console.log("error in db.deletefriend", error));
+    } else {
+        db.acceptRequest(sender_id, recipient_id)
+            .then(({ rows }) => {
+                console.log("rows after accepting friend request", rows);
+                res.json({ rows: rows, loggedInUser: req.session.userId });
+            })
+            .catch((error) =>
+                console.log("error in acceptFriend-db-req", error)
+            );
+    }
 });
 
 app.get("*", function (req, res) {

@@ -94,9 +94,41 @@ module.exports.searchPeople = (input) => {
     );
 };
 
-module.export.getFriendshipStatus = (sender_id, recipient_id) => {
+module.exports.getFriendshipStatus = (sender_id, recipient_id) => {
     const q = `
-    SELECT * FROM friendships WHERE (recipient_id = $1 AND sender_id = $2) OR (recipient_id = $2 AND sender_id = $1);
+    SELECT * FROM friendships 
+    WHERE (recipient_id = $1 AND sender_id = $2) 
+    OR (recipient_id = $2 AND sender_id = $1);
+    `;
+    const params = [sender_id, recipient_id];
+    return db.query(q, params);
+};
+
+module.exports.addFriend = (sender_id, recipient_id) => {
+    const q = `
+    INSERT INTO friendships (sender_id, recipient_id)
+    VALUES ($1, $2)
+    RETURNING *
+    `;
+    const params = [sender_id, recipient_id];
+    return db.query(q, params);
+};
+
+module.exports.deleteFriend = (sender_id, recipient_id) => {
+    const q = `
+    DELETE FROM friendships 
+    WHERE (recipient_id = $1 AND sender_id = $2) 
+    OR (recipient_id = $2 AND sender_id = $1)
+    `;
+    const params = [sender_id, recipient_id];
+    return db.query(q, params);
+};
+
+module.exports.acceptRequest = (sender_id, recipient_id) => {
+    const q = `
+    UPDATE friendships SET accepted = TRUE
+    WHERE (recipient_id = $1 AND sender_id = $2) 
+    OR (recipient_id = $2 AND sender_id = $1)
     `;
     const params = [sender_id, recipient_id];
     return db.query(q, params);
