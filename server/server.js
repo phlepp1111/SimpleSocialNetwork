@@ -12,6 +12,12 @@ const s3 = require("./S3");
 const uidSafe = require("uid-safe");
 const multer = require("multer");
 const secrets = require("../secrets");
+//socket.io-boilerplate:
+const server = require("http").Server(app);
+const io = require("socket.io")(server, {
+    allowRequest: (req, callback) =>
+        callback(null, req.headers.referer.startsWith("http://localhost:3000")),
+});
 
 const diskStorage = multer.diskStorage({
     destination: function (req, file, callback) {
@@ -240,12 +246,12 @@ app.post("/users/:input", (req, res) => {
 });
 
 app.post("/friends/:id", (req, res) => {
-    console.log("req.params FriendshipStatus: ", req.params);
+    // console.log("req.params FriendshipStatus: ", req.params);
     const sender_id = req.session.userId;
     const recipient_id = req.params.id;
     db.getFriendshipStatus(sender_id, recipient_id)
         .then(({ rows }) => {
-            console.log("Result ROWS Friendshipstatus: ", rows);
+            // console.log("Result ROWS Friendshipstatus: ", rows);
             res.json({
                 rows: rows[0],
                 loggedInUser: req.session.userId,
@@ -258,14 +264,14 @@ app.post("/friends/:id", (req, res) => {
 
 app.post("/addFriend", (req, res) => {
     console.log("adding a friend");
-    console.log(req.body);
+    // console.log(req.body);
     const { friendlyAction, otherUser } = req.body;
     const sender_id = req.session.userId;
     const recipient_id = otherUser;
     if (friendlyAction === "ADD FRIEND") {
         db.addFriend(sender_id, recipient_id)
             .then(({ rows }) => {
-                console.log("Result friend request", rows);
+                // console.log("Result friend request", rows);
                 res.json({ rows: rows[0], loggedInUser: req.session.userId });
             })
             .catch((error) =>
@@ -277,20 +283,33 @@ app.post("/addFriend", (req, res) => {
     ) {
         db.deleteFriend(sender_id, recipient_id)
             .then(({ rows }) => {
-                console.log("rows from deleteFriend", rows);
+                // console.log("rows from deleteFriend", rows);
                 res.json({ rows: rows[0], loggedInUser: req.session.userId });
             })
             .catch((error) => console.log("error in db.deletefriend", error));
     } else {
         db.acceptRequest(sender_id, recipient_id)
             .then(({ rows }) => {
-                console.log("rows after accepting friend request", rows);
+                // console.log("rows after accepting friend request", rows);
                 res.json({ rows: rows[0], loggedInUser: req.session.userId });
             })
             .catch((error) =>
                 console.log("error in acceptFriend-db-req", error)
             );
     }
+});
+
+app.get("/get-friends", (req, res) => {
+    // console.log("user logged in", req.session.userId);
+    db.getFriendConnections(req.session.userId)
+        .then(({ rows }) => {
+            console.log("getting all connections", rows);
+            res.json({ users: rows });
+        })
+        .catch((err) => {
+            console.log("err in get all connections", err);
+            res.json({ success: false });
+        });
 });
 
 app.get("*", function (req, res) {
@@ -301,6 +320,6 @@ app.get("*", function (req, res) {
     }
 });
 
-app.listen(process.env.PORT || 3001, function () {
+server.listen(process.env.PORT || 3001, function () {
     console.log("I'm listening.");
 });
