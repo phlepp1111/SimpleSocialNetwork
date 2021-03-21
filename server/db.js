@@ -80,7 +80,7 @@ module.exports.saveBio = (bio, id) => {
 module.exports.getMostRecent = () => {
     const q = `
     SELECT id, first, last, imageurl, created_at FROM users
-    ORDER BY created_at ASC
+    ORDER BY created_at DESC
     LIMIT 3
     `;
     return db.query(q);

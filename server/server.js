@@ -304,12 +304,31 @@ app.get("/get-friends", (req, res) => {
     db.getFriendConnections(req.session.userId)
         .then(({ rows }) => {
             console.log("getting all connections", rows);
-            res.json({ users: rows });
+            res.json(rows);
         })
-        .catch((err) => {
-            console.log("err in get all connections", err);
+        .catch((error) => {
+            console.log("err in get all connections", error);
             res.json({ success: false });
         });
+});
+app.post("/accept-friend", (req, res) => {
+    const { otherUser } = req.body;
+    db.acceptRequest(req.session.userId, otherUser)
+        .then(({ rows }) => {
+            console.log("response from accept-friend", rows[0]);
+            res.json({ rows: rows[0], loggedInUser: req.session.userId });
+        })
+        .catch((error) => console.log("err in post .acceptFriend", error));
+});
+
+app.post("/unfriend-friend", (req, res) => {
+    const { otherUser } = req.body;
+    db.deleteFriend(req.session.userId, otherUser)
+        .then(({ rows }) => {
+            console.log("rows from app.post /unfriend-friend", rows[0]);
+            res.json({ rows: rows[0], loggedInUser: req.session.userId });
+        })
+        .catch((error) => console.log("error in /unfriend-friend", error));
 });
 
 app.get("*", function (req, res) {
@@ -322,4 +341,16 @@ app.get("*", function (req, res) {
 
 server.listen(process.env.PORT || 3001, function () {
     console.log("I'm listening.");
+});
+
+io.on("connection", (socket) => {
+    console.log(`socket with id: ${socket.id} has connected`);
+
+    socket.emit("hello", {
+        cohort: "fennel",
+    });
+
+    socket.on("disconnect", () => {
+        console.log(`socket with id: ${socket.id} has disconnected`);
+    });
 });
