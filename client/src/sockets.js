@@ -1,5 +1,5 @@
 // import { chatMessages, chatMessage } from "./actions";
-import io from "socket.io-client";
+import { io } from "socket.io-client";
 export let socket;
 
 export const init = (store) => {
