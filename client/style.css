@@ -1,5 +1,6 @@
 body {
     background-color: lightgrey;
+    font-family: consolas;
 }
 textarea {
     width: 300px;
@@ -7,6 +8,7 @@ textarea {
 }
 
 .smallprofile {
+    z-index: 10;
     position: fixed;
     top: 15px;
     right: 15px;
@@ -17,6 +19,7 @@ textarea {
     box-shadow: 0 0 50px;
     transition: 0.3s color;
     color: dimgray;
+    object-fit: cover;
 }
 .smallprofile:hover {
     color: black;
@@ -42,6 +45,7 @@ textarea {
     margin: auto;
 }
 .Logo {
+    z-index: 10;
     position: fixed;
     top: 15px;
     left: 15px;
@@ -54,6 +58,48 @@ textarea {
     color: dimgray;
 }
 .Logo:hover {
+    color: black;
+}
+.ChatLogo {
+    z-index: 10;
+    position: fixed;
+    top: 15px;
+    left: 170px;
+    width: 75px;
+    height: 75px;
+    border: 2px solid black;
+    border-radius: 50%;
+    box-shadow: 0 0 50px;
+    transition: 0.3s color;
+    color: dimgray;
+}
+.ChatLogo:hover {
+    color: black;
+}
+.Chat {
+    width: 100vw;
+    position: relative;
+    text-align: center;
+    margin: auto;
+}
+.ChatSmall {
+    position: relative;
+    margin: auto;
+}
+.Logout {
+    z-index: 10;
+    position: fixed;
+    top: 15px;
+    right: 170px;
+    width: 75px;
+    height: 75px;
+    border: 2px solid black;
+    border-radius: 50%;
+    box-shadow: 0 0 50px;
+    transition: 0.3s color;
+    color: dimgray;
+}
+.Logout:hover {
     color: black;
 }
 .findpeople {

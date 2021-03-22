@@ -149,3 +149,13 @@ module.exports.getFriendConnections = (sender_id) => {
     const params = [sender_id];
     return db.query(q, params);
 };
+
+module.exports.getChat = () => {
+    const q = `
+    SELECT * 
+    FROM chat
+    ORDER BY created_at DESC
+    LIMIT 10
+    `;
+    return db.query(q);
+};

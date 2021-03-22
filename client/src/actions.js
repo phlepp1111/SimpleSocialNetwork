@@ -8,16 +8,27 @@ export async function getFriendConnections() {
     };
 }
 export async function acceptFriend(id) {
-    await axios.post("/accept-friend", { otherUser: id });
+    await axios.post("/addFriend", {
+        otherUser: id,
+        friendlyAction: "ADD FRIEND",
+    });
     return {
         type: "ACCEPT_FRIEND",
         id: id,
     };
 }
 export async function unfriend(id) {
-    await axios.post("/unfriend-friend", { otherUser: id });
+    await axios.post("/addfriend", {
+        otherUser: id,
+        friendlyAction: "UNFRIEND",
+    });
     return {
         type: "UNFRIEND_FRIEND",
         id: id,
     };
 }
+export async function chatMessages() {
+    axios.get("/getChat");
+}
+
+export function chatMessage(id) {}

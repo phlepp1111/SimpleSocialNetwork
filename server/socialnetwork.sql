@@ -20,11 +20,20 @@
 --     created_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 -- )
 
-DROP TABLE IF EXISTS friendships;
+-- DROP TABLE IF EXISTS friendships;
 
-CREATE TABLE friendships (
+-- CREATE TABLE friendships (
+--     id SERIAL PRIMARY KEY,
+--     sender_id INT REFERENCES users(id) NOT NULL,
+--     recipient_id INT REFERENCES users(id) NOT NULL,
+--     accepted BOOLEAN DEFAULT false 
+-- );
+
+DROP TABLE IF EXISTS chat;
+
+CREATE TABLE chat(
     id SERIAL PRIMARY KEY,
     sender_id INT REFERENCES users(id) NOT NULL,
-    recipient_id INT REFERENCES users(id) NOT NULL,
-    accepted BOOLEAN DEFAULT false 
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    chat_message VARCHAR(255) NOT NULL CHECK (chat_message <> '')
 );

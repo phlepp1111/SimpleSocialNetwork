@@ -40,7 +40,7 @@ export default class Registration extends React.Component {
     }
     render() {
         return (
-            <div>
+            <div className="title">
                 <h1>Register Here</h1>
                 {this.state.error && (
                     <p className="errorMessage">something went wrong</p>

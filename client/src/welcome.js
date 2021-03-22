@@ -6,8 +6,8 @@ import Reset from "./reset";
 export default function Welcome() {
     return (
         <div>
-            <h1>Welcome to foebook</h1>
-            <img src="emoji.jpg"></img>
+            <h1 className="title">Welcome to the semi-social network</h1>
+            <img className="fullprofile" src="geometric dots.gif"></img>
             <HashRouter>
                 <div>
                     <Route exact path="/" component={Registration} />

@@ -7,23 +7,23 @@ export default function Chat() {
     console.log("chatMessages: ", chatMessages);
 
     const elemRef = useRef();
-    // useEffect(() => {
-    //     console.log("chat mounted");
-    //     console.log("elemRef.current:", elemRef.current);
-    //     console.log("elemRef.current.SCROLLTOP:", elemRef.current.scrollTop);
-    //     console.log(
-    //         "elemRef.current..SCROLLHEIGHT:",
-    //         elemRef.current.scrollHeight
-    //     );
-    //     console.log(
-    //         "elemRef.current.CLIENTHEIGHT:",
-    //         elemRef.current.clientHeight
-    //     );
+    useEffect(() => {
+        console.log("chat mounted");
+        console.log("elemRef.current:", elemRef.current);
+        console.log("elemRef.current.SCROLLTOP:", elemRef.current.scrollTop);
+        console.log(
+            "elemRef.current..SCROLLHEIGHT:",
+            elemRef.current.scrollHeight
+        );
+        console.log(
+            "elemRef.current.CLIENTHEIGHT:",
+            elemRef.current.clientHeight
+        );
 
-    //     const newScrollTop =
-    //         elemRef.current.scrollHeight - elemRef.current.clientHeight;
-    //     elemRef.current.scrollTop = newScrollTop;
-    // }, []);
+        const newScrollTop =
+            elemRef.current.scrollHeight - elemRef.current.clientHeight;
+        elemRef.current.scrollTop = newScrollTop;
+    }, []);
 
     const keyCheck = (e) => {
         if (e.key === "Enter") {
@@ -35,16 +35,19 @@ export default function Chat() {
     };
     return (
         <>
-            <div ref={elemRef}>
-                <h1>Chat room</h1>
-                <p>Chat message here</p>
-                <p>Chat message here</p>
-                <p>Chat message here</p>
-                <p>Chat message here</p>
-                <p>Chat message here</p>
-                <p>Chat message here</p>
-                <p>Chat message here</p>
-                <p>Chat message here</p>
+            <div className="Chat" id="chatMessages" ref={elemRef}>
+                <div className="ChatSmall">
+                    <h1>Chat room</h1>
+                    <p>Chat message here</p>
+                    <p>Chat message here</p>
+                    <p>Chat message here</p>
+                    <p>Chat message here</p>
+                    <p>Chat message here</p>
+                    <p>Chat message here</p>
+                    <p>Chat message here</p>
+                    <p>Chat message here</p>
+                    <textarea onKeyDown={keyCheck}></textarea>
+                </div>
             </div>
         </>
     );

@@ -60,6 +60,15 @@ export default class App extends Component {
                     <Link to="/users">
                         <img className="Logo" src="../geometric dots.gif"></img>
                     </Link>
+                    <Link to="/chat">
+                        <img
+                            className="ChatLogo"
+                            src="https://media.giphy.com/media/xThuWtNFKZWG6fUFe8/giphy.gif"
+                        ></img>
+                    </Link>
+                    <Link to="/logout">
+                        <img className="Logout" src="default.png"></img>
+                    </Link>
                     <h1 className="title">Semi-social network</h1>
                     <ProfilePic
                         className="smallprofile"

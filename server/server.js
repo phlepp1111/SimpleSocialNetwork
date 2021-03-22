@@ -130,7 +130,8 @@ app.post("/login", (req, res) => {
 
 app.get("/logout", (req, res) => {
     req.session.userId = null;
-    res.sendStatus(200);
+    // res.sendStatus(200);
+    res.redirect("/");
 });
 
 app.post("/reset1", (req, res) => {
@@ -319,25 +320,6 @@ app.get("/get-friends", (req, res) => {
             console.log("err in get all connections", error);
             res.json({ success: false });
         });
-});
-app.post("/accept-friend", (req, res) => {
-    const { otherUser } = req.body;
-    db.acceptRequest(req.session.userId, otherUser)
-        .then(({ rows }) => {
-            console.log("response from accept-friend", rows[0]);
-            res.json({ rows: rows[0], loggedInUser: req.session.userId });
-        })
-        .catch((error) => console.log("err in post .acceptFriend", error));
-});
-
-app.post("/unfriend-friend", (req, res) => {
-    const { otherUser } = req.body;
-    db.deleteFriend(req.session.userId, otherUser)
-        .then(({ rows }) => {
-            console.log("rows from app.post /unfriend-friend", rows[0]);
-            res.json({ rows: rows[0], loggedInUser: req.session.userId });
-        })
-        .catch((error) => console.log("error in /unfriend-friend", error));
 });
 
 app.get("*", function (req, res) {
