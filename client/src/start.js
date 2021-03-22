@@ -6,7 +6,8 @@ import { Provider } from "react-redux";
 import reduxPromise from "redux-promise";
 import { composeWithDevTools } from "redux-devtools-extension";
 import reducer from "./reducer";
-// import io from "/socket.io-client";
+import io from "socket.io-client";
+import { init } from "./sockets";
 
 //const socket = io.connect();
 //socket.on("hello", (data)=>{console.log("data from hello server: ", data)});
@@ -20,6 +21,7 @@ let elem;
 if (location.pathname === "/welcome") {
     elem = <Welcome />;
 } else {
+    init(store);
     elem = (
         <Provider store={store}>
             <App />

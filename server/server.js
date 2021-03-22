@@ -40,12 +40,21 @@ app.use(compression());
 
 app.use(express.static(path.join(__dirname, "..", "client", "public")));
 
-app.use(
-    cookieSession({
-        secret: secrets.COOKIE,
-        maxAge: 1000 * 60 * 60 * 24 * 14,
-    })
-);
+// app.use(
+//     cookieSession({
+//         secret: secrets.COOKIE,
+//         maxAge: 1000 * 60 * 60 * 24 * 14,
+//     })
+// );
+const cookieSessionMiddleware = cookieSession({
+    secret: secrets.COOKIE,
+    maxAge: 1000 * 60 * 60 * 24 * 14,
+});
+app.use(cookieSessionMiddleware);
+io.use(function (socket, next) {
+    cookieSessionMiddleware(socket.request, socket.request.res, next);
+});
+
 app.use(express.urlencoded({ extended: false }));
 
 app.use(csrf());
@@ -345,11 +354,19 @@ server.listen(process.env.PORT || 3001, function () {
 
 io.on("connection", (socket) => {
     console.log(`socket with id: ${socket.id} has connected`);
+    if (!socket.request.session.userId) {
+        return socket.disconnect(true);
+    }
 
-    socket.emit("hello", {
-        cohort: "fennel",
+    const userId = socket.request.session.userId;
+    console.log("user ID in sockets:", userId);
+
+    socket.emit("userConnected", [1, 2, 3]);
+
+    socket.on("my amazing chat message", (msg) => {
+        console.log("msg from chat", msg);
+        io.sockets.emit("sending back to client", msg);
     });
-
     socket.on("disconnect", () => {
         console.log(`socket with id: ${socket.id} has disconnected`);
     });

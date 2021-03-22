@@ -7,6 +7,7 @@ import Profile from "./profile";
 import OtherProfile from "./otherprofile";
 import FindPeople from "./findpeople";
 import GetFriends from "./getFriends";
+import Chat from "./chat";
 
 export default class App extends Component {
     constructor() {
@@ -101,6 +102,7 @@ export default class App extends Component {
                         path="/get-friends"
                         render={() => <GetFriends />}
                     />
+                    <Route path="/chat" component={Chat} />
 
                     {this.state.uploaderIsVisible && (
                         <Uploader
