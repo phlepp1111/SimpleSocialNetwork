@@ -364,10 +364,10 @@ io.on("connection", (socket) => {
                         );
                         io.sockets.emit("chatMessage", {
                             userId: userId,
-                            message: msg,
-                            fist_name: rows[0].first,
-                            last_name: rows[0].last,
-                            imageUrl: rows[0].imageUrl,
+                            chat_message: msg,
+                            first: rows[0].first,
+                            last: rows[0].last,
+                            imageurl: rows[0].imageurl,
                             created_at: created_at,
                         });
                     })
