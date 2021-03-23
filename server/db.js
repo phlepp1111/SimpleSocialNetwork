@@ -152,10 +152,21 @@ module.exports.getFriendConnections = (sender_id) => {
 
 module.exports.getChat = () => {
     const q = `
-    SELECT * 
+    SELECT chat.id, chat.sender_id, chat.created_at, chat.chat_message, users.first, users.last, users.imageUrl 
     FROM chat
+    JOIN users 
+    ON users.id = chat.sender_id
     ORDER BY created_at DESC
     LIMIT 10
     `;
     return db.query(q);
+};
+
+module.exports.addChat = (chat_message, sender_id) => {
+    const q = `
+    INSERT INTO chat (sender_id, chat_message)
+    VALUES ($1, $2)
+    RETURNING id, created_at`;
+    const params = [sender_id, chat_message];
+    return db.query(q, params);
 };

@@ -37,6 +37,16 @@ export default function reducer(state = {}, action) {
                 }
             }),
         };
+    } else if (action.type === "MOST_RECENT_CHAT") {
+        state = {
+            ...state,
+            messages: action.data,
+        };
+    } else if (action.type === "CHAT_MESSAGE") {
+        state = {
+            ...state,
+            messages: [...state.messages, action.data],
+        };
     }
     return state;
 }

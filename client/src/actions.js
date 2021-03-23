@@ -27,8 +27,16 @@ export async function unfriend(id) {
         id: id,
     };
 }
-export async function chatMessages() {
-    axios.get("/getChat");
+export function chatMessages(msgs) {
+    return {
+        type: "MOST_RECENT_CHAT",
+        data: msgs,
+    };
 }
 
-export function chatMessage(id) {}
+export function chatMessage(msg) {
+    return {
+        type: "CHAT_MESSAGE",
+        data: msg,
+    };
+}

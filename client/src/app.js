@@ -66,9 +66,9 @@ export default class App extends Component {
                             src="https://media.giphy.com/media/xThuWtNFKZWG6fUFe8/giphy.gif"
                         ></img>
                     </Link>
-                    <Link to="/logout">
+                    <a href="/logout">
                         <img className="Logout" src="default.png"></img>
-                    </Link>
+                    </a>
                     <h1 className="title">Semi-social network</h1>
                     <ProfilePic
                         className="smallprofile"

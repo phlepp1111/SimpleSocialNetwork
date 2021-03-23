@@ -333,23 +333,56 @@ app.get("*", function (req, res) {
 server.listen(process.env.PORT || 3001, function () {
     console.log("I'm listening.");
 });
-
+// let onlineUsers = {};
 io.on("connection", (socket) => {
     console.log(`socket with id: ${socket.id} has connected`);
     if (!socket.request.session.userId) {
         return socket.disconnect(true);
     }
+    // onlineUsers[socket.id] = userId;
 
     const userId = socket.request.session.userId;
     console.log("user ID in sockets:", userId);
-
-    socket.emit("userConnected", [1, 2, 3]);
+    db.getChat()
+        .then(({ rows }) => {
+            console.log("result from getChat:", rows);
+            socket.emit("chatMessages", rows.reverse());
+        })
+        .catch((error) => console.log("error getting chat messages: ", error));
+    // socket.emit("userConnected", [1, 2, 3]);
 
     socket.on("my amazing chat message", (msg) => {
         console.log("msg from chat", msg);
+        db.addChat(msg, userId)
+            .then(({ rows }) => {
+                const created_at = rows[0].created_at;
+                db.getUser(userId)
+                    .then(({ rows }) => {
+                        console.log(
+                            "getting user-info after chat message",
+                            rows
+                        );
+                        io.sockets.emit("chatMessage", {
+                            userId: userId,
+                            message: msg,
+                            fist_name: rows[0].first,
+                            last_name: rows[0].last,
+                            imageUrl: rows[0].imageUrl,
+                            created_at: created_at,
+                        });
+                    })
+                    .catch((error) =>
+                        console.log(
+                            "error getting user info after chat msg",
+                            error
+                        )
+                    );
+            })
+            .catch((error) => console.log("error adding chat to db", error));
         io.sockets.emit("sending back to client", msg);
     });
     socket.on("disconnect", () => {
         console.log(`socket with id: ${socket.id} has disconnected`);
+        // delete onlineUsers[socket.id];
     });
 });
