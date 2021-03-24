@@ -63,7 +63,7 @@ export default function FindPeople() {
                         })}
                 </div>
                 <input
-                    placeholder="enter name here"
+                    placeholder="find other users here"
                     defaultValue={searchTerm}
                     onChange={({ target }) => {
                         setSearchTerm(target.value);

@@ -10,16 +10,16 @@ export default function Chat() {
     const elemRef = useRef();
     useEffect(() => {
         console.log("chat mounted");
-        // console.log("elemRef.current:", elemRef.current);
-        // console.log("elemRef.current.SCROLLTOP:", elemRef.current.scrollTop);
-        // console.log(
-        //     "elemRef.current..SCROLLHEIGHT:",
-        //     elemRef.current.scrollHeight
-        // );
-        // console.log(
-        //     "elemRef.current.CLIENTHEIGHT:",
-        //     elemRef.current.clientHeight
-        // );
+        console.log("elemRef.current:", elemRef.current);
+        console.log("elemRef.current.SCROLLTOP:", elemRef.current.scrollTop);
+        console.log(
+            "elemRef.current..SCROLLHEIGHT:",
+            elemRef.current.scrollHeight
+        );
+        console.log(
+            "elemRef.current.CLIENTHEIGHT:",
+            elemRef.current.clientHeight
+        );
 
         const newScrollTop =
             elemRef.current.scrollHeight - elemRef.current.clientHeight;
