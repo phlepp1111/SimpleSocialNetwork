@@ -171,7 +171,7 @@ module.exports.addChat = (chat_message, sender_id) => {
 };
 module.exports.getUsers = (otherOnlineUsers) => {
     const q = `
-        SELECT first, last, bio, imageurl 
+        SELECT * 
         FROM users
         WHERE id = ANY($1)
     `;

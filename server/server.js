@@ -346,6 +346,7 @@ io.on("connection", (socket) => {
     let otherOnlineUsers = [];
     otherOnlineUsers = onlineUsersId.filter((users) => users != userId);
     console.log("other online users:", otherOnlineUsers);
+
     db.getUser(otherOnlineUsers)
         .then(({ rows }) => {
             console.log("rows in new online users:", rows);

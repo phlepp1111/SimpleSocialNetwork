@@ -9,7 +9,7 @@ export function FriendButton({ id }) {
         axios
             .post("/addFriend", { friendlyAction: button, otherUser: id })
             .then(({ data }) => {
-                console.log("db response: ", data);
+                // console.log("db response: ", data);
                 setButton(buttonStatus(data));
             })
             .catch((error) => console.log("error requestfriend :", error));
@@ -18,7 +18,7 @@ export function FriendButton({ id }) {
     function buttonStatus(friendshipStatus) {
         let buttonText = "ADD FRIEND";
         if (friendshipStatus.rows) {
-            console.log("FRIENDSHIPSTATUS", friendshipStatus);
+            // console.log("FRIENDSHIPSTATUS", friendshipStatus);
             const { sender_id, accepted } = friendshipStatus.rows;
             if (accepted === true) {
                 buttonText = "UNFRIEND";
@@ -41,7 +41,7 @@ export function FriendButton({ id }) {
             axios
                 .post("/friends/" + id)
                 .then(({ data }) => {
-                    console.log("FriendshipStatus data:", data);
+                    // console.log("FriendshipStatus data:", data);
                     setButton(buttonStatus(data));
                 })
                 .catch((error) =>
