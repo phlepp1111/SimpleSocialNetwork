@@ -1,4 +1,4 @@
-import { chatMessages, chatMessage } from "./actions";
+import { chatMessages, chatMessage, onlineUsers } from "./actions";
 import { io } from "socket.io-client";
 export let socket;
 
@@ -12,8 +12,8 @@ export const init = (store) => {
 
         socket.on("chatMessage", (msg) => store.dispatch(chatMessage(msg)));
 
-        // socket.on("This is the new Message", (msg) => {
-        //     store.dispatch(chatMessage(msg));
-        // });
+        socket.on("onlineUsers", (online) =>
+            store.dispatch(onlineUsers(online))
+        );
     }
 };

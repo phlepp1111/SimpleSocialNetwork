@@ -10,18 +10,6 @@ export default function Chat() {
 
     const elemRef = useRef();
     useEffect(() => {
-        console.log("chat mounted");
-        console.log("elemRef.current:", elemRef.current);
-        console.log("elemRef.current.SCROLLTOP:", elemRef.current.scrollTop);
-        console.log(
-            "elemRef.current.SCROLLHEIGHT:",
-            elemRef.current.scrollHeight
-        );
-        console.log(
-            "elemRef.current.CLIENTHEIGHT:",
-            elemRef.current.clientHeight
-        );
-
         const newScrollTop =
             elemRef.current.scrollHeight - elemRef.current.clientHeight;
         elemRef.current.scrollTop = newScrollTop;
@@ -40,7 +28,7 @@ export default function Chat() {
             <div className="Chat" id="chatMessages">
                 <div className="ChatSmall">
                     <h1>Chat room</h1>
-                    <OnlineUsers></OnlineUsers>
+                    <OnlineUsers />
                     <div className="ChatContainer" ref={elemRef}>
                         {chatMessages &&
                             chatMessages.map((chatMessages, index) => (

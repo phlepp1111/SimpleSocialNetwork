@@ -347,10 +347,10 @@ io.on("connection", (socket) => {
     otherOnlineUsers = onlineUsersId.filter((users) => users != userId);
     console.log("other online users:", otherOnlineUsers);
 
-    db.getUser(otherOnlineUsers)
+    db.getUsers(otherOnlineUsers)
         .then(({ rows }) => {
             console.log("rows in new online users:", rows);
-            io.sockets.emit("onlineUsers", rows);
+            io.sockets.sockets.get(socket.id).emit("onlineUsers", rows);
         })
         .catch((error) => console.log("error getting online users: ", error));
 
@@ -369,7 +369,7 @@ io.on("connection", (socket) => {
         db.addChat(msg, userId)
             .then(({ rows }) => {
                 const created_at = rows[0].created_at;
-                db.getUsers(userId)
+                db.getUser(userId)
                     .then(({ rows }) => {
                         console.log(
                             "getting user-info after chat message",

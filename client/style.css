@@ -1,8 +1,22 @@
 body {
-    background-color: lightgrey;
+    background: #ffe259; /* fallback for old browsers */
+    background: -webkit-linear-gradient(
+        to top,
+        #ffa751,
+        #ffe259
+    ); /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(
+        to top,
+        #ffa751,
+        #ffe259
+    ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+    background-attachment: fixed;
+
     font-family: consolas;
 }
 textarea {
+    margin-top: 5px;
     width: 300px;
     height: 70px;
     text-align: center;
@@ -19,7 +33,7 @@ textarea {
     border-radius: 50%;
     box-shadow: 0 0 50px;
     transition: 0.3s color;
-    color: dimgray;
+    color: greenyellow;
     object-fit: cover;
 }
 .smallprofile:hover {
@@ -56,7 +70,7 @@ textarea {
     border-radius: 50%;
     box-shadow: 0 0 50px;
     transition: 0.3s color;
-    color: dimgray;
+    color: greenyellow;
 }
 .Logo:hover {
     color: black;
@@ -72,7 +86,7 @@ textarea {
     border-radius: 50%;
     box-shadow: 0 0 50px;
     transition: 0.3s color;
-    color: dimgray;
+    color: greenyellow;
 }
 .ChatLogo:hover {
     color: black;
@@ -98,7 +112,7 @@ textarea {
     border-radius: 50%;
     box-shadow: 0 0 50px;
     transition: 0.3s color;
-    color: dimgray;
+    color: greenyellow;
 }
 .Logout:hover {
     color: black;
@@ -115,15 +129,14 @@ input {
     text-align: center;
 }
 .mostRecentImage {
-    max-width: 100px;
-    max-height: 100px;
+    width: 70px;
+    height: 70px;
     object-fit: cover;
 }
 .mostRecentContainer {
     width: 150px;
     height: 150px;
     margin: auto;
-    transition: 0.3s color;
     padding: 5px;
 }
 
@@ -135,18 +148,18 @@ input {
 .friendDiv {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-evenly;
+    justify-content: center;
     flex-direction: row;
 }
 .friendDivSmall {
-    width: 200px;
+    width: 300px;
     height: 200px;
 }
 .ChatPic {
-    margin: 0;
+    margin-left: 3px;
     object-fit: cover;
-    max-width: 50px;
-    max-height: 50px;
+    width: 50px;
+    height: 50px;
 }
 .createdAt {
     color: rgba(0, 0, 0, 0.274);
@@ -155,7 +168,7 @@ input {
 .ChatContainer {
     position: relative;
     margin: auto;
-    width: 60vw;
+    width: 70vw;
     height: 650px;
     padding: 5px;
     overflow-y: auto;
@@ -166,8 +179,52 @@ input {
     margin: auto;
     box-shadow: 0 0 20px;
     border-radius: 20px;
+    background-color: rgba(107, 107, 107, 0.322);
 }
 .chatText {
     margin: 0;
     font-size: 1.5em;
+}
+.onlineUsers {
+    position: fixed;
+    width: 150px;
+    top: 25%;
+    left: 3%;
+}
+.onlineUsersContainer {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+.onlineUsersContainerSmall {
+    width: 150px;
+    height: 100px;
+    padding: 3px;
+}
+.onlineUsersPic {
+    object-fit: cover;
+    width: 50px;
+    height: 50px;
+    color: black;
+}
+.search:hover {
+    color: rgb(165, 42, 42);
+}
+.login {
+    text-align: center;
+}
+.newestMembers {
+    position: fixed;
+    width: 150px;
+    top: 25%;
+    right: 3%;
+}
+.newestContainer {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+.newestContainerSmall {
+    height: 120px;
+    width: 150px;
 }

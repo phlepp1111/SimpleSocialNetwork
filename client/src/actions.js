@@ -40,10 +40,10 @@ export async function chatMessage(msg) {
         data: msg,
     };
 }
-export async function onlineUsers(data) {
-    console.log(`data in action`, data);
+export async function onlineUsers(users) {
+    console.log(`users in action`, users);
     return {
         type: "ONLINE_USERS",
-        data: data,
+        online: users,
     };
 }

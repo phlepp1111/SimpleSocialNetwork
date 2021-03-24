@@ -34,7 +34,7 @@ export default class Login extends Component {
 
     render() {
         return (
-            <div>
+            <div className="login">
                 <h1>Login Here:</h1>
                 <h3>
                     Or <Link to="/">Register Here</Link>

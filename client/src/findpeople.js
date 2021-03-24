@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "./axios";
 import GetFriends from "./getFriends";
+import OnlineUsers from "./onlineUsers";
 
 export default function FindPeople() {
     const [searchTerm, setSearchTerm] = useState();
@@ -34,33 +35,37 @@ export default function FindPeople() {
         <div className="findpeople">
             <div className="people">
                 <GetFriends />
-
-                <h3>newest members:</h3>
-                <div className="friendDiv">
-                    {resultUsers &&
-                        resultUsers.map(function (user) {
-                            return (
-                                <div className="friendDivSmall" key={user.id}>
-                                    <Link
-                                        className="mostRecentLink"
-                                        to={`/users/${user.id}`}
+                <div className="newestMembers">
+                    <h4>newest members:</h4>
+                    <div className="newestContainer">
+                        {resultUsers &&
+                            resultUsers.map(function (user) {
+                                return (
+                                    <div
+                                        className="newestContainerSmall"
+                                        key={user.id}
                                     >
-                                        <div className="mostRecentContainer">
-                                            <img
-                                                className="mostRecentImage"
-                                                src={
-                                                    user.imageurl ||
-                                                    "default.png"
-                                                }
-                                            />
-                                            <p>
-                                                {user.first} {user.last}
-                                            </p>
-                                        </div>
-                                    </Link>
-                                </div>
-                            );
-                        })}
+                                        <Link
+                                            className="mostRecentLink"
+                                            to={`/users/${user.id}`}
+                                        >
+                                            <div className="mostRecentContainer">
+                                                <img
+                                                    className="mostRecentImage"
+                                                    src={
+                                                        user.imageurl ||
+                                                        "default.png"
+                                                    }
+                                                />
+                                                <p>
+                                                    {user.first} {user.last}
+                                                </p>
+                                            </div>
+                                        </Link>
+                                    </div>
+                                );
+                            })}
+                    </div>
                 </div>
                 <input
                     placeholder="find other users here"
@@ -78,13 +83,14 @@ export default function FindPeople() {
                                     className="mostRecentLink"
                                     to={`/users/${user.id}`}
                                 >
-                                    <p>
+                                    <p className="search">
                                         {user.first} {user.last}
                                     </p>
                                 </Link>
                             </div>
                         );
                     })}
+                <OnlineUsers />
             </div>
         </div>
     );
