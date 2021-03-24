@@ -47,6 +47,12 @@ export default function reducer(state = {}, action) {
             ...state,
             messages: [...state.messages, action.data],
         };
+    } else if (action.type === "ONLINE_USERS") {
+        console.log(`action.data in reducer`, action.data);
+        state = {
+            ...state,
+            onlineUsers: action.data,
+        };
     }
     return state;
 }

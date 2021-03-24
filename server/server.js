@@ -297,8 +297,8 @@ app.post("/addFriend", (req, res) => {
                 res.json({ rows: rows[0], loggedInUser: req.session.userId });
             })
             .catch((error) => console.log("error in db.deletefriend", error));
-    } else {
-        db.acceptRequest(sender_id, recipient_id)
+    } else if (friendlyAction === "ACCEPT FRIEND") {
+        db.acceptRequest(sender_id, recipient_id, true)
             .then(({ rows }) => {
                 // console.log("rows after accepting friend request", rows);
                 res.json({ rows: rows[0], loggedInUser: req.session.userId });
@@ -333,30 +333,42 @@ app.get("*", function (req, res) {
 server.listen(process.env.PORT || 3001, function () {
     console.log("I'm listening.");
 });
-// let onlineUsers = {};
+let onlineUsers = {};
 io.on("connection", (socket) => {
     console.log(`socket with id: ${socket.id} has connected`);
     if (!socket.request.session.userId) {
         return socket.disconnect(true);
     }
-    // onlineUsers[socket.id] = userId;
+    let userId = socket.request.session.userId;
 
-    const userId = socket.request.session.userId;
+    onlineUsers[socket.id] = userId;
+    const onlineUsersId = Object.values(onlineUsers);
+    let otherOnlineUsers = [];
+    otherOnlineUsers = onlineUsersId.filter((users) => users != userId);
+    console.log("other online users:", otherOnlineUsers);
+    db.getUser(otherOnlineUsers)
+        .then(({ rows }) => {
+            console.log("rows in new online users:", rows);
+            io.sockets.emit("onlineUsers", rows);
+        })
+        .catch((error) => console.log("error getting online users: ", error));
+
     console.log("user ID in sockets:", userId);
+
     db.getChat()
         .then(({ rows }) => {
-            console.log("result from getChat:", rows);
+            // console.log("result from getChat:", rows);
             socket.emit("chatMessages", rows.reverse());
         })
         .catch((error) => console.log("error getting chat messages: ", error));
     // socket.emit("userConnected", [1, 2, 3]);
 
     socket.on("my amazing chat message", (msg) => {
-        console.log("msg from chat", msg);
+        // console.log("msg from chat", msg);
         db.addChat(msg, userId)
             .then(({ rows }) => {
                 const created_at = rows[0].created_at;
-                db.getUser(userId)
+                db.getUsers(userId)
                     .then(({ rows }) => {
                         console.log(
                             "getting user-info after chat message",
@@ -383,6 +395,6 @@ io.on("connection", (socket) => {
     });
     socket.on("disconnect", () => {
         console.log(`socket with id: ${socket.id} has disconnected`);
-        // delete onlineUsers[socket.id];
+        delete onlineUsers[socket.id];
     });
 });

@@ -125,14 +125,13 @@ module.exports.deleteFriend = (sender_id, recipient_id) => {
     return db.query(q, params);
 };
 
-module.exports.acceptRequest = (sender_id, recipient_id) => {
+module.exports.acceptRequest = (sender_id, recipient_id, accepted) => {
     const q = `
-    UPDATE friendships SET accepted = TRUE
+    UPDATE friendships 
+    SET accepted = $3
     WHERE (recipient_id = $1 AND sender_id = $2) 
-    OR (recipient_id = $2 AND sender_id = $1)
-    RETURNING *
     `;
-    const params = [sender_id, recipient_id];
+    const params = [sender_id, recipient_id, accepted];
     return db.query(q, params);
 };
 
@@ -168,5 +167,14 @@ module.exports.addChat = (chat_message, sender_id) => {
     VALUES ($1, $2)
     RETURNING id, created_at`;
     const params = [sender_id, chat_message];
+    return db.query(q, params);
+};
+module.exports.getUsers = (otherOnlineUsers) => {
+    const q = `
+        SELECT first, last, bio, imageurl 
+        FROM users
+        WHERE id = ANY($1)
+    `;
+    const params = [otherOnlineUsers];
     return db.query(q, params);
 };

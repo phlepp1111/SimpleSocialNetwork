@@ -8,6 +8,7 @@ import OtherProfile from "./otherprofile";
 import FindPeople from "./findpeople";
 import GetFriends from "./getFriends";
 import Chat from "./chat";
+import OnlineUsers from "./onlineUsers";
 
 export default class App extends Component {
     constructor() {
@@ -67,7 +68,7 @@ export default class App extends Component {
                         ></img>
                     </Link>
                     <a href="/logout">
-                        <img className="Logout" src="default.png"></img>
+                        <img className="Logout" src="./default.png"></img>
                     </a>
                     <h1 className="title">Semi-social network</h1>
                     <ProfilePic
@@ -112,6 +113,7 @@ export default class App extends Component {
                         render={() => <GetFriends />}
                     />
                     <Route path="/chat" component={Chat} />
+                    <Route path="/online" component={OnlineUsers} />
 
                     {this.state.uploaderIsVisible && (
                         <Uploader

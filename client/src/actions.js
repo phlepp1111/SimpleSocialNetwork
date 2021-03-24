@@ -10,7 +10,7 @@ export async function getFriendConnections() {
 export async function acceptFriend(id) {
     await axios.post("/addFriend", {
         otherUser: id,
-        friendlyAction: "ADD FRIEND",
+        friendlyAction: "ACCEPT FRIEND",
     });
     return {
         type: "ACCEPT_FRIEND",
@@ -27,16 +27,23 @@ export async function unfriend(id) {
         id: id,
     };
 }
-export function chatMessages(msgs) {
+export async function chatMessages(msgs) {
     return {
         type: "MOST_RECENT_CHAT",
         data: msgs,
     };
 }
 
-export function chatMessage(msg) {
+export async function chatMessage(msg) {
     return {
         type: "CHAT_MESSAGE",
         data: msg,
+    };
+}
+export async function onlineUsers(data) {
+    console.log(`data in action`, data);
+    return {
+        type: "ONLINE_USERS",
+        data: data,
     };
 }

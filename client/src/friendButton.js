@@ -48,7 +48,7 @@ export function FriendButton({ id }) {
                     console.log("error getting friendship status: ", error)
                 );
         },
-        [id]
+        [id, button]
     );
     return (
         <div>

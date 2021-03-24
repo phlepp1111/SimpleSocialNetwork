@@ -5,7 +5,6 @@ import { getFriendConnections, unfriend, acceptFriend } from "./actions";
 
 export default function GetFriends() {
     const dispatch = useDispatch();
-    // console.log("Hello from Get-friends:");
 
     useEffect(() => {
         dispatch(getFriendConnections());

@@ -2,7 +2,8 @@ import { useEffect, useRef } from "react";
 import { socket } from "./sockets";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-
+import OnlineUsers from "./onlineUsers";
+console.log("onlineUsers:", OnlineUsers);
 export default function Chat() {
     const chatMessages = useSelector((state) => state && state.messages);
     console.log("chatMessages: ", chatMessages);
@@ -13,7 +14,7 @@ export default function Chat() {
         console.log("elemRef.current:", elemRef.current);
         console.log("elemRef.current.SCROLLTOP:", elemRef.current.scrollTop);
         console.log(
-            "elemRef.current..SCROLLHEIGHT:",
+            "elemRef.current.SCROLLHEIGHT:",
             elemRef.current.scrollHeight
         );
         console.log(
@@ -36,10 +37,11 @@ export default function Chat() {
     };
     return (
         <>
-            <div className="Chat" id="chatMessages" ref={elemRef}>
+            <div className="Chat" id="chatMessages">
                 <div className="ChatSmall">
                     <h1>Chat room</h1>
-                    <div className="ChatContainer">
+                    <OnlineUsers></OnlineUsers>
+                    <div className="ChatContainer" ref={elemRef}>
                         {chatMessages &&
                             chatMessages.map((chatMessages, index) => (
                                 <div className="chatMessage" key={index}>
@@ -58,7 +60,8 @@ export default function Chat() {
                                         {chatMessages.chat_message}
                                     </p>
                                     <p className="createdAt">
-                                        {chatMessages.created_at}{" "}
+                                        {chatMessages.created_at.slice(0, 10)}{" "}
+                                        {chatMessages.created_at.slice(12, 16)}
                                     </p>
                                 </div>
                             ))}
